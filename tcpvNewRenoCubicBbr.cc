@@ -130,7 +130,7 @@ Config::SetDefault("ns3::TcpL4Protocol::RecoveryType",
   
 // Add the error model to the desired device (d1 in this case)
   //Ptr<RateErrorModel> em = CreateObject<RateErrorModel>();
-  //em->SetAttribute("ErrorRate", DoubleValue(0.0001));//0.01 = 1%
+  //em->SetAttribute("ErrorRate", DoubleValue(0.01));//0.01 = 1%
   //d3.Get(0)->SetAttribute("ReceiveErrorModel", PointerValue(em));
   //d3.Get(1)->SetAttribute("ReceiveErrorModel", PointerValue(em));
 
