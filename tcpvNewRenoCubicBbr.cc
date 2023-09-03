@@ -242,7 +242,7 @@ Config::SetDefault("ns3::TcpL4Protocol::RecoveryType",
 	std::map < FlowId, FlowMonitor::FlowStats > stats = monitor->GetFlowStats();
 
 	double Delaysum = 0;
-        //double jitterSum = 0;
+        double jitterSum = 0;
 	uint64_t txPacketsum = 0;
 	uint64_t rxPacketsum = 0;
 	uint32_t txPacket = 0;
@@ -251,7 +251,7 @@ Config::SetDefault("ns3::TcpL4Protocol::RecoveryType",
         uint64_t txBytessum = 0; 
 	uint64_t rxBytessum = 0;
        double delay;
-       //double jitter;
+       double jitter;
        	double throughput = 0;
 	for (std::map < FlowId, FlowMonitor::FlowStats > ::const_iterator iter = stats.begin(); iter != stats.end(); ++iter) {
 		Ipv4FlowClassifier::FiveTuple t = classifier->FindFlow(iter->first);
@@ -261,7 +261,7 @@ Config::SetDefault("ns3::TcpL4Protocol::RecoveryType",
                   rxPacket = iter->second.rxPackets;
                   PacketLoss = txPacket - rxPacket;
                   delay = iter->second.delaySum.GetMilliSeconds();
-                  //jitter = iter->second.jitterSum.GetMilliSeconds();
+                  jitter = iter->second.jitterSum.GetMilliSeconds();
            std::cout << "  Tx Packets: " << iter->second.txPackets << "\n";
           std::cout << "  Rx Packets: " << iter->second.rxPackets << "\n";
           std::cout << "  Packet Loss: " << PacketLoss << "\n";
@@ -269,7 +269,7 @@ Config::SetDefault("ns3::TcpL4Protocol::RecoveryType",
           std::cout << "  Rx Bytes:   " << iter->second.rxBytes << "\n";
           std::cout << "  Throughput: " << iter->second.rxBytes * 8.0 / 9.0 / 1000 / 1000  << " Mbps\n";
          NS_LOG_UNCOND("  Mean Delay: " << delay / txPacket << " ms");
-         //NS_LOG_UNCOND("  Per Node Jitter: " << jitter / txPacket << " ms");
+         NS_LOG_UNCOND("  Per Node Jitter: " << jitter / txPacket << " ms");
          std::cout << "   PDR for current flow ID : " << ((rxPacket *100) / txPacket) << "%" << "\n";
                                       
 		txPacketsum += iter->second.txPackets;
@@ -277,7 +277,7 @@ Config::SetDefault("ns3::TcpL4Protocol::RecoveryType",
 		txBytessum += iter->second.txBytes;
 		rxBytessum += iter->second.rxBytes;
 		Delaysum += iter->second.delaySum.GetMilliSeconds();
-                //jitterSum += iter->second.jitterSum.GetMilliSeconds();
+                jitterSum += iter->second.jitterSum.GetMilliSeconds();
         }          
             if(tp==1){
              NS_LOG_UNCOND("***********TcpNewReno  Results*************");
@@ -296,7 +296,7 @@ Config::SetDefault("ns3::TcpL4Protocol::RecoveryType",
         NS_LOG_UNCOND("Total Byte Sent = "<<txBytessum);
         NS_LOG_UNCOND("Total Byte Received = "<<rxBytessum);
       	NS_LOG_UNCOND("Mean Delay: " << Delaysum / txPacketsum << " ms");
-        //NS_LOG_UNCOND("Jitter: " << jitterSum / txPacketsum << " ms");
+        NS_LOG_UNCOND("Jitter: " << jitterSum / txPacketsum << " ms");
 	std::cout << "Average Throughput = "<<throughput << " Mbit/s" << std::endl;
         std::cout << "Packets Delivery Ratio: " << ((rxPacketsum *100) / txPacketsum) << "%" << "\n";
         monitor->SerializeToXmlFile("Haithem.flowmon", true, true);
